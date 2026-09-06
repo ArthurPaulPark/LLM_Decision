@@ -1,0 +1,32 @@
+# Qwen2.5-1.5B V3 Hard Sample Optimization YAML
+# V2 설정을 기반으로 Hard Sample Fine-Tuning 옵션 오버라이딩
+
+extends: "competition_qlora.yaml"
+
+paths:
+  data_processed: "./data/processed_hard"        # Hard Dataset 경로
+
+model:
+  name: "outputs/qwen15_v2/quantized/merged_bf16"
+
+training:
+  output_dir: "./outputs/qwen15_v3_hard/checkpoints"
+  num_epochs: 2                          # Catastrophic Forgetting 방지를 위해 짧게
+  learning_rate: 5.0e-5                  # V2 (2.0e-4) 보다 낮은 LR로 지식 교정
+  warmup_ratio: 0.1
+  save_strategy: "steps"
+  save_steps: 100                        # 데이터가 작으므로 100단위로 저장
+  eval_strategy: "steps"
+  eval_steps: 100
+  seed: 42
+
+extra_training_args:
+  lr_scheduler_type: "cosine"
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_macro_f1"
+  greater_is_better: true
+  patience: 3
+
+extra_optimization_args:
+  use_rslora: true
+  neftune_noise_alpha: 5

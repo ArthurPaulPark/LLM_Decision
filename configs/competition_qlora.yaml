@@ -1,0 +1,74 @@
+# AI 의사결정 대회용 QLoRA 설정 (Qwen2.5-1.5B-Instruct) - v2
+# 변경사항 (v2):
+#   - lora_rank: 16 → 32  (표현력 증가)
+#   - lora_alpha: 32 → 64 (rank와 동일 비율 유지)
+#   - num_epochs: 2 → 3   (분류 태스크에 충분한 학습)
+#   - completion_only_loss: true (프롬프트 토큰 loss 제거 → 라벨 신호 강화)
+# 태스크: 코딩 세션 컨텍스트 → 다음 액션 분류 (14개 클래스)
+# 하드웨어: RTX 4500 Ada 24GB
+# 목표: 파인튜닝 후 GGUF Q3_K_M → ~786MB (LightGBM 51MB 포함 총 ~840MB < 1GB)
+
+extends: "base.yaml"
+
+dataset:
+  name: "competition_local"
+  adapter: "competition"        # competition_adapter.py 사용
+  cache_dir: "./data/cache"
+  train_split: "train"
+  validation_split: "validation"
+  test_split: "test"
+
+model:
+  name: "Qwen/Qwen2.5-1.5B-Instruct"
+  model_type: "instruct"
+  torch_dtype: "bfloat16"
+  device_map: "auto"
+  trust_remote_code: true
+
+training:
+  output_dir: "./outputs/checkpoints"
+  num_epochs: 3                        # v2: 2→3 (분류 태스크, 과적합 위험 낮음)
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 8       # 유효 배치 = 32 유지
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  max_steps: -1
+  gradient_checkpointing: true
+  mixed_precision: "bf16"
+  save_strategy: "steps"
+  save_steps: 300
+  eval_strategy: "steps"
+  eval_steps: 300
+  save_total_limit: 3
+  seed: 42
+  completion_only_loss: true           # v2: assistant 응답 토큰만 loss 계산
+
+optimization:
+  type: "qlora"
+  lora_rank: 32                        # v2: 16→32
+  lora_alpha: 64                       # v2: 32→64
+  lora_dropout: 0.05
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  bias: "none"
+  task_type: "CAUSAL_LM"
+  load_in_4bit: true
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_compute_dtype: "bfloat16"
+
+inference:
+  temperature: 0.0
+  max_new_tokens: 16
+  top_p: 1.0
+  top_k: 1
+  repetition_penalty: 1.0
+  do_sample: false

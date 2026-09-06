@@ -1,0 +1,25 @@
+# Qwen2.5-1.5B Production Optimization YAML (v2)
+# Extends current competition QLoRA setup with improved PEFT hyperparameters
+
+extends: "competition_qlora.yaml"
+
+training:
+  output_dir: "./outputs/qwen15_v2/checkpoints"
+  warmup_ratio: 0.05
+  save_strategy: "steps"
+  save_steps: 500                        # 평가 오버헤드 최소화 (100→500)
+  eval_strategy: "steps"
+  eval_steps: 500
+  seed: 42                               # 난수 고정 시드
+
+# dataclass 충돌 방지를 위해 train_v2.py에서 pop하여 처리할 특수 파라미터들
+extra_training_args:
+  lr_scheduler_type: "cosine"             # Scheduler 개선
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_macro_f1"  # Macro F1 기준 checkpoint 선택
+  greater_is_better: true
+  patience: 2                            # Early Stopping Patience
+
+extra_optimization_args:
+  use_rslora: true                       # Rank Stabilized LoRA
+  neftune_noise_alpha: 5                 # NEFTune 정규화

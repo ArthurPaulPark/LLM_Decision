@@ -1,0 +1,36 @@
+# Environments
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+
+# Large / regenerable data
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/cache/*
+!data/cache/.gitkeep
+data_alt/
+
+# Model weights and training outputs
+models/*
+!models/.gitkeep
+outputs/checkpoints/*
+!outputs/checkpoints/.gitkeep
+outputs/adapters/*
+!outputs/adapters/.gitkeep
+outputs/predictions/*
+!outputs/predictions/.gitkeep
+outputs/tensorboard/*
+!outputs/tensorboard/.gitkeep
+*.gguf
+*.safetensors
+
+# Submission artifacts
+submit.zip
+lgbm_probs.csv
+lgbm_val_probs.csv

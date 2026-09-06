@@ -1,0 +1,56 @@
+[
+  {
+    "name": "get_weather",
+    "description": "Get the current weather for a given location and date.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "description": "The city and state, e.g. San Francisco, CA or Seoul"
+        },
+        "date": {
+          "type": "string",
+          "description": "The date for weather forecast, e.g. today, tomorrow, or 2026-06-30"
+        }
+      },
+      "required": ["location"]
+    }
+  },
+  {
+    "name": "send_email",
+    "description": "Send an email to a recipient.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "to": {
+          "type": "string",
+          "description": "The email address of the recipient, e.g. john@example.com"
+        },
+        "subject": {
+          "type": "string",
+          "description": "The subject line of the email"
+        },
+        "body": {
+          "type": "string",
+          "description": "The body content of the email"
+        }
+      },
+      "required": ["to", "subject", "body"]
+    }
+  },
+  {
+    "name": "math_sqrt",
+    "description": "Calculate the square root of a number.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number",
+          "description": "The number to calculate the square root for"
+        }
+      },
+      "required": ["value"]
+    }
+  }
+]

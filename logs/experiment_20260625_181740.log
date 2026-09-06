@@ -1,0 +1,20 @@
+2026-06-25 18:17:40 - configs.config - INFO - ✓ All directories created
+2026-06-25 18:17:40 - adapters.base_adapter - INFO - Initialized XLAMAdapter for Salesforce/xlam-function-calling-60k v1.0
+2026-06-25 18:17:40 - Preprocessor - INFO - ================================================================================
+2026-06-25 18:17:40 - Preprocessor - INFO - PREPROCESSING PIPELINE
+2026-06-25 18:17:40 - Preprocessor - INFO - ================================================================================
+2026-06-25 18:17:40 - Preprocessor - INFO - 
+[1/5] Downloading dataset...
+2026-06-25 18:17:40 - adapters.xlam_adapter - INFO - Downloading Salesforce/xlam-function-calling-60k...
+2026-06-25 18:17:40 - datasets.load - ERROR - `trust_remote_code` is not supported anymore.
+Please check that the Hugging Face dataset 'Salesforce/xlam-function-calling-60k' isn't based on a loading script and remove `trust_remote_code`.
+If the dataset is based on a loading script, please ask the dataset author to remove it and convert it to a standard format like Parquet.
+2026-06-25 18:17:40 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/xlam-function-calling-60k/resolve/main/README.md "HTTP/1.1 200 OK"
+2026-06-25 18:17:40 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/xlam-function-calling-60k/resolve/26d14ebfe18b1f7b524bd39b404b50af5dc97866/xlam-function-calling-60k.py "HTTP/1.1 403 Forbidden"
+2026-06-25 18:17:41 - httpx - INFO - HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/Salesforce/xlam-function-calling-60k/Salesforce/xlam-function-calling-60k.py "HTTP/1.1 404 Not Found"
+2026-06-25 18:17:41 - httpx - INFO - HTTP Request: GET https://huggingface.co/api/datasets/Salesforce/xlam-function-calling-60k/revision/26d14ebfe18b1f7b524bd39b404b50af5dc97866 "HTTP/1.1 200 OK"
+2026-06-25 18:17:41 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/xlam-function-calling-60k/resolve/26d14ebfe18b1f7b524bd39b404b50af5dc97866/.huggingface.yaml "HTTP/1.1 403 Forbidden"
+2026-06-25 18:17:41 - httpx - INFO - HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=Salesforce/xlam-function-calling-60k "HTTP/1.1 404 Not Found"
+2026-06-25 18:17:42 - httpx - INFO - HTTP Request: GET https://huggingface.co/api/datasets/Salesforce/xlam-function-calling-60k/tree/26d14ebfe18b1f7b524bd39b404b50af5dc97866?recursive=false&expand=false "HTTP/1.1 200 OK"
+2026-06-25 18:17:42 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/xlam-function-calling-60k/resolve/26d14ebfe18b1f7b524bd39b404b50af5dc97866/dataset_infos.json "HTTP/1.1 403 Forbidden"
+2026-06-25 18:17:42 - httpx - INFO - HTTP Request: HEAD https://huggingface.co/datasets/Salesforce/xlam-function-calling-60k/resolve/26d14ebfe18b1f7b524bd39b404b50af5dc97866/xlam_function_calling_60k.json "HTTP/1.1 403 Forbidden"

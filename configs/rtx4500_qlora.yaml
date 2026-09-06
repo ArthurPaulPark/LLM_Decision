@@ -1,0 +1,68 @@
+# RTX 4500 Ada Generation (24GB VRAM) + Qwen2.5-7B-Instruct
+# QLoRA Configuration - Multilingual / Function Calling 최적화
+# 추천 모델: Qwen/Qwen2.5-7B-Instruct
+#
+# VRAM 추정치:
+#   모델 가중치 (4-bit):  7B × 0.5B = ~3.5GB
+#   LoRA 어댑터 (bf16):  rank=64, 전체 레이어 = ~300MB
+#   활성화 (batch=4, seq=2048): ~5GB
+#   옵티마이저 (LoRA만): ~400MB
+#   합계: ~10GB  →  24GB VRAM에서 안전하게 동작
+
+extends: "base.yaml"
+
+model:
+  name: "Qwen/Qwen3-4B"
+  model_type: "instruct"
+  torch_dtype: "bfloat16"
+  device_map: "auto"
+  trust_remote_code: true
+
+training:
+  output_dir: "./outputs/checkpoints"
+  num_epochs: 2
+  per_device_train_batch_size: 8      # 4B 모델 → 24GB에서 배치 8 가능
+  per_device_eval_batch_size: 16
+  gradient_accumulation_steps: 2      # 유효 배치 = 16 유지
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  max_steps: -1                       # epoch 기반 학습
+  gradient_checkpointing: true
+  mixed_precision: "bf16"
+  save_strategy: "steps"
+  save_steps: 200
+  eval_strategy: "steps"
+  eval_steps: 200
+  save_total_limit: 3
+  seed: 42
+
+optimization:
+  type: "qlora"
+  lora_rank: 32                       # 속도/정확도 균형
+  lora_alpha: 64                      # alpha = 2 × rank 권장
+  lora_dropout: 0.05
+  # Qwen2.5 전체 projection 레이어 타겟 (MLP 포함)
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  bias: "none"
+  task_type: "CAUSAL_LM"
+  # 4-bit 양자화 설정
+  load_in_4bit: true
+  bnb_4bit_use_double_quant: true     # 추가 메모리 절약 (~0.4 bits/param)
+  bnb_4bit_quant_type: "nf4"         # NormalFloat4 - 정규분포 가중치에 최적
+  bnb_4bit_compute_dtype: "bfloat16" # Ada 아키텍처는 bf16 지원
+
+inference:
+  temperature: 0.0
+  max_new_tokens: 512
+  top_p: 1.0
+  top_k: 1
+  repetition_penalty: 1.0
+  do_sample: false                    # Function Calling은 결정론적 출력 필요

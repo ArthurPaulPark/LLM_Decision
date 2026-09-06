@@ -1,0 +1,27 @@
+# LoRA Configuration (for RTX 4500 Ada with 24GB VRAM)
+# Optimized for high-throughput training with bfloat16 support
+
+extends: "base.yaml"
+
+training:
+  num_epochs: 3
+  per_device_train_batch_size: 8          # T4(4) -> RTX 4500 Ada(8)로 배치 증설
+  per_device_eval_batch_size: 16         # T4(8) -> RTX 4500 Ada(16)
+  gradient_accumulation_steps: 1         # 누적 단계를 1로 줄여 학습 속도 최적화
+  learning_rate: 3.0e-4                  # 배치 증가에 맞춘 적절한 학습률 조정
+  max_steps: 5000
+  warmup_ratio: 0.1
+  gradient_checkpointing: true
+  mixed_precision: "bf16"                # Ada Lovelace GPU 성능 극대화를 위한 bf16 채택
+
+optimization:
+  type: "lora"
+  lora_rank: 16                          # T4(8) -> RTX 4500 Ada(16)로 튜닝 파라미터 증가
+  lora_alpha: 32                         # lora_rank의 2배 설정
+  lora_dropout: 0.05
+  target_modules: ["q_proj", "v_proj", "k_proj", "o_proj"]
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+model:
+  torch_dtype: "bfloat16"                # 메모리 절약과 수렴 안정성을 위한 bfloat16 명시

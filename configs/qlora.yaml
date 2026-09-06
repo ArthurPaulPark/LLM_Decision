@@ -1,0 +1,33 @@
+# QLoRA Configuration (for T4 with 16GB VRAM)
+# More memory efficient with 4-bit quantization
+
+extends: "base.yaml"
+
+training:
+  num_epochs: 3
+  per_device_train_batch_size: 2
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 2.0e-4
+  max_steps: 5000
+  warmup_ratio: 0.1
+  gradient_checkpointing: true
+  mixed_precision: "bf16"
+
+optimization:
+  type: "qlora"
+  lora_rank: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  target_modules: ["q_proj", "v_proj", "k_proj", "o_proj"]
+  bias: "none"
+  task_type: "CAUSAL_LM"
+  
+  # 4-bit Quantization settings
+  load_in_4bit: true
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_compute_dtype: "bfloat16"
+
+model:
+  torch_dtype: "bfloat16"

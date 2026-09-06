@@ -1,0 +1,27 @@
+# LoRA Configuration (for T4 with 16GB VRAM)
+# Optimized for memory efficiency while maintaining quality
+
+extends: "base.yaml"
+
+training:
+  num_epochs: 3
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 8
+  gradient_accumulation_steps: 2
+  learning_rate: 5.0e-4
+  max_steps: 5000
+  warmup_ratio: 0.1
+  gradient_checkpointing: true
+  mixed_precision: "fp16"
+
+optimization:
+  type: "lora"
+  lora_rank: 8
+  lora_alpha: 16
+  lora_dropout: 0.05
+  target_modules: ["q_proj", "v_proj", "k_proj", "o_proj"]
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+model:
+  torch_dtype: "float16"

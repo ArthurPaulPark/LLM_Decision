@@ -1,0 +1,43 @@
+# Core ML Dependencies
+# torch는 setup.sh 에서 CUDA 버전 맞춰 별도 설치 (cu121)
+transformers>=4.45.0
+peft>=0.13.0
+bitsandbytes>=0.44.0        # QLoRA NF4, RTX 40xx Ada 지원
+accelerate>=0.34.0
+datasets>=2.21.0
+trl>=0.11.0                 # SFTTrainer formatting_func 지원
+huggingface_hub>=0.25.0     # snapshot_download 등
+
+# Quantization & Optimization
+optimum>=1.23.0
+
+# Data Processing
+pandas>=2.1.4
+numpy>=1.26.0
+pyyaml>=6.0.1
+
+# API & Web
+fastapi>=0.115.0
+uvicorn>=0.30.0
+streamlit>=1.38.0
+streamlit-aggrid>=0.3.5
+plotly>=5.24.0
+
+# Monitoring & Logging
+tensorboard>=2.17.0
+wandb>=0.18.0
+python-dotenv>=1.0.0
+
+# Utilities
+click>=8.1.7
+tqdm>=4.66.5
+pydantic>=2.9.0
+pydantic-settings>=2.5.0
+python-multipart>=0.0.12
+requests>=2.32.0
+
+# Development
+pytest>=8.3.0
+black>=24.8.0
+flake8>=7.1.0
+isort>=5.13.2

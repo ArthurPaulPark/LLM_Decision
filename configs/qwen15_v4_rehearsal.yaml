@@ -1,0 +1,32 @@
+# Qwen2.5-1.5B V4 Rehearsal Optimization YAML
+# 원본 Base Model에 Hard + Easy 섞인 데이터로 재학습
+
+extends: "competition_qlora.yaml"
+
+paths:
+  data_processed: "./data/processed_v4_rehearsal"
+
+model:
+  name: "Qwen/Qwen2.5-1.5B-Instruct"
+
+training:
+  output_dir: "./outputs/qwen15_v4_rehearsal/checkpoints"
+  num_epochs: 3
+  learning_rate: 2.0e-4
+  warmup_ratio: 0.05
+  save_strategy: "steps"
+  save_steps: 200
+  eval_strategy: "steps"
+  eval_steps: 200
+  seed: 42
+
+extra_training_args:
+  lr_scheduler_type: "cosine"
+  load_best_model_at_end: true
+  metric_for_best_model: "eval_macro_f1"
+  greater_is_better: true
+  patience: 3
+
+extra_optimization_args:
+  use_rslora: true
+  neftune_noise_alpha: 5

@@ -1,0 +1,18 @@
+# ================================================================
+# submit.zip용 requirements.txt
+# 평가 서버 기본 설치 패키지는 제외함 (충돌 방지)
+#
+# 기본 설치됨 → 제외:
+#   torch==2.7.1+cu128, transformers==4.46.3, accelerate==1.9.0
+#   pandas==2.0.3, numpy==1.26.4, scikit-learn==1.8.0
+#   sentencepiece==0.1.99, tqdm==4.66.4, pyyaml==6.0.1
+#   cmake, ninja-build, build-essential (시스템 패키지)
+# ================================================================
+
+# LightGBM
+lightgbm>=4.0.0
+
+# llama-cpp-python: CUDA 12.8 사전 컴파일 휠
+# T4 GPU (CUDA 12.8, Python 3.11, Linux) 전용
+--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu128
+llama-cpp-python>=0.3.0

@@ -1,0 +1,118 @@
+# Teacher v2 최적화 설정
+# Phase 1: Teacher 자체 일반화 성능 향상
+#
+# 기존 대비 변경사항:
+#   [Task 2] rsLoRA: use_rslora=true (rank-stabilized scaling)
+#   [Task 3] LoRA+: lora_lr_a=1e-4, lora_lr_b=4e-4 (A/B 차등 LR)
+#   [Task 4] Target Modules: 7개 유지 (기존 이미 확장됨)
+#   [Task 5] Scheduler: linear → cosine, warmup_ratio=0.05
+#   [Task 6] NEFTune: neftune_noise_alpha=5
+#   [Task 7] QLoRA / Completion-Only / BF16 / GradCkpt / FlashAttn 유지
+#
+# 절대 변경 금지:
+#   - Dataset (data_alt/)
+#   - Prompt / System Prompt
+#   - Adapter (competition_adapter.py)
+#   - 기존 outputs/ 덮어쓰기
+#
+# 실행: sbatch scripts/submit_teacher_v2.sh
+
+extends: "../configs/base.yaml"
+
+dataset:
+  name: "competition_local"
+  adapter: "competition"
+  cache_dir: "./data/cache"
+  train_split: "train"
+  validation_split: "validation"
+  test_split: "test"
+
+model:
+  # 현재 Teacher base: ArthurPark/qwen3-4b_merged 학습 시 사용한 base
+  # compute node에 사전 다운로드 필요:
+  #   huggingface-cli download Qwen/Qwen3-4B --local-dir ~/.cache/huggingface/...
+  name: "Qwen/Qwen3-4B"
+  model_type: "instruct"
+  torch_dtype: "bfloat16"
+  device_map: "auto"
+  trust_remote_code: true
+  # Flash Attention 2 (설치 필요: pip install flash-attn)
+  # 미설치 시 자동으로 SDPA fallback
+  attn_implementation: "flash_attention_2"
+
+training:
+  output_dir: "./outputs/teacher_v2/checkpoints"
+  num_epochs: 3
+  per_device_train_batch_size: 8      # 4B 모델: batch 줄임
+  per_device_eval_batch_size: 16
+  gradient_accumulation_steps: 4      # 유효 배치 = 32
+  learning_rate: 2.0e-4               # LoRA+ base LR (A에 적용)
+  weight_decay: 0.01
+  warmup_ratio: 0.05                  # [Task 5] cosine warmup
+  max_steps: -1
+  gradient_checkpointing: true        # [Task 7] 유지
+  mixed_precision: "bf16"             # [Task 7] 유지
+  save_strategy: "steps"
+  save_steps: 300
+  eval_strategy: "steps"
+  eval_steps: 300
+  save_total_limit: 3
+  seed: 42
+  completion_only_loss: true          # [Task 7] 유지
+
+  # [Task 5] Cosine Scheduler
+  lr_scheduler_type: "cosine"
+
+  # [Task 6] NEFTune
+  neftune_noise_alpha: 5.0
+
+  # [Task 3] LoRA+ (lr_b / lr_a ratio)
+  loraplus_lr_ratio: 4.0              # lr_B = 4 × lr_A = 4e-4
+  loraplus_lr_a: 1.0e-4              # LoRA A LR (명시)
+  loraplus_lr_b: 4.0e-4              # LoRA B LR (명시)
+
+optimization:
+  type: "qlora"
+  lora_rank: 32
+  lora_alpha: 32                      # rsLoRA: alpha=rank → scaling=sqrt(rank)
+  lora_dropout: 0.05
+  # [Task 4] Target Modules: 7개 유지
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  bias: "none"
+  task_type: "CAUSAL_LM"
+  # [Task 7] QLoRA 유지
+  load_in_4bit: true
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_quant_type: "nf4"
+  bnb_4bit_compute_dtype: "bfloat16"
+  # [Task 2] rsLoRA
+  use_rslora: true
+
+inference:
+  temperature: 0.0
+  max_new_tokens: 16
+  top_p: 1.0
+  top_k: 1
+  repetition_penalty: 1.0
+  do_sample: false
+
+logging:
+  level: "INFO"
+  log_dir: "./logs/teacher_v2"
+  tensorboard_dir: "./outputs/teacher_v2/tensorboard"
+  wandb_project: "teacher-v2-optimization"
+  wandb_enabled: false
+
+paths:
+  data_raw: "./data/raw"
+  data_processed: "./data/processed"
+  models_dir: "./models"
+  outputs_dir: "./outputs/teacher_v2"
+  scripts_dir: "./scripts"
