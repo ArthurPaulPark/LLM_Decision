@@ -6,6 +6,78 @@ A production-quality, reusable, and extensible framework for fine-tuning large l
 
 Build a universal framework that works with ANY function calling dataset, not just Salesforce xLAM. When a new competition starts with a different dataset, **only the DatasetAdapter needs to change**. Everything else remains unchanged.
 
+## 🏆 Competition Case Study: Budget Router
+
+This framework was built out for a DACON competition task: given a coding
+agent's session state (open files, remaining token budget, CI status,
+conversation history), predict which of 14 actions it takes next
+(`read_file`, `run_tests`, `ask_user`, `apply_patch`, ...). The evaluation
+environment imposed two hard constraints: **inference had to finish within
+10 minutes on a single T4 GPU**, and the whole submission package (model
+weights included) **had to stay under 1GB**.
+
+A single LLM comfortably meets the accuracy bar but not the time/size budget;
+a single classical classifier meets the budget but not the accuracy bar. The
+solution was a confidence-gated hybrid (`budget_router.py`, `script.py`):
+
+```
+30,000 test samples
+        │
+        ▼
+LightGBM (5-fold ensemble) — ~5s total
+   │                    │
+   │ max_prob ≥ 0.65     │ max_prob < 0.65  (~15-20% of samples)
+   ▼                    ▼
+use LightGBM        Qwen2.5-1.5B-Instruct (QLoRA, GGUF Q3_K_S, ~680MB)
+prediction as-is     re-predicts at ~30ms/sample on the T4
+   │                    │
+   └────────┬───────────┘
+            ▼
+     submission.csv  (~186s total, well inside the 10-minute budget)
+```
+
+LightGBM disposes of 80-85% of samples in about 5 seconds (~0.17ms/sample);
+only the samples it's genuinely unsure about get escalated to the
+fine-tuned LLM, which is roughly 170x slower per-sample (~30ms) but only
+runs on that smaller fraction. A time-budget guard aborts LLM re-prediction
+early if the deadline is close, so the pipeline degrades gracefully instead
+of timing out.
+
+**Model selection.** Qwen2.5-1.5B-Instruct was chosen over Gemma-3-1B and
+Llama-3.2-1B for three reasons that all mattered under the 1GB ceiling:
+stronger Korean-language handling, native ChatML support (matches the
+training template with no adapter code), and a GGUF footprint that fit
+comfortably under budget at Q3_K_S.
+
+**Quantization was a measured tradeoff, not a default:**
+
+| Format | Size | Val. accuracy | Verdict |
+|---|---|---|---|
+| IQ2_XXS | ~488MB | ~10% | Too degraded, rejected |
+| Q4_K_M | ~1.0GB | ~72% | Exceeds the 1GB ceiling once bundled with LightGBM |
+| **Q3_K_S** | **~680MB** | **~70%** | **Selected** — fits, keeps accuracy |
+
+**Where the fine-tuned model actually struggles**, measured on a 1,000-sample
+validation set — this is the kind of gap analysis that shaped what to fix
+next, not a leaderboard score:
+
+| Action | Accuracy | Note |
+|---|---|---|
+| `run_bash` | 82% | Clear keyword patterns |
+| `read_file` | 78% | |
+| `grep_search` | 75% | |
+| `edit_file` | 71% | |
+| `respond_only` | 65% | |
+| `plan_task` | 58% | Confused with `ask_user` |
+| `ask_user` | 52% | Confused with `plan_task`, `respond_only` |
+| `apply_patch` | 45% | Least training data |
+
+Full write-up, including the training config history (LoRA rank/epoch
+sweeps, completion-only loss, NEFTune) and the bugs hit along the way
+(a `DataCollatorForCompletionOnlyLM` import break across TRL versions, a
+missing `attention_mask` key from `SFTTrainer`, a wrong quantization CLI
+choice), is in [`finetuning_report.docx`](finetuning_report.docx).
+
 ## ⭐ Key Features
 
 - **🔄 Universal Architecture**: Adapter-based design for multiple datasets
