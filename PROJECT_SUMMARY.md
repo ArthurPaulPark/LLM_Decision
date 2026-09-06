@@ -94,7 +94,7 @@
   - Gradient accumulation: 4
 
 - [x] **config.py** - Configuration system
-  - Pydantic dataclasses
+  - Python dataclasses
   - YAML parsing
   - Type validation
   - Directory creation
@@ -188,7 +188,7 @@
 
 ### 3. **Type Safety**
 - ✅ Full type hints for IDE support
-- ✅ Runtime validation with Pydantic
+- ✅ Runtime validation via dataclass field checks
 - ✅ Catch errors early
 - ✅ Better code maintainability
 

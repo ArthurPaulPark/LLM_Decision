@@ -425,7 +425,7 @@ merged_model.save_pretrained("merged_model")
 
 ## 📄 License
 
-[Specify your license here]
+MIT License — see [LICENSE](LICENSE) for details.
 
 ## 🤝 Contributing
 

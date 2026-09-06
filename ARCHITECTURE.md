@@ -96,7 +96,7 @@ adapter.parse_prediction()   → Extract tool calls from output
 base.yaml   → Default settings
 lora.yaml   → LoRA optimized
 qlora.yaml  → QLoRA optimized
-config.py   → Pydantic dataclasses
+config.py   → Python dataclasses
 ```
 
 ### Preprocessing (`preprocess.py`)

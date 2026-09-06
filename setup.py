@@ -10,6 +10,7 @@ setup(
     version="1.0.0",
     author="LLM Decision Framework Contributors",
     description="Universal framework for function calling fine-tuning",
+    license="MIT",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/",
@@ -17,7 +18,7 @@ setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.11",
-        "License :: OSI Approved :: Apache Software License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
@@ -33,7 +34,6 @@ setup(
         "datasets>=2.14.0",
         "accelerate>=0.24.0",
         "bitsandbytes>=0.41.0",
-        "pydantic>=2.4.0",
         "pyyaml>=6.0.0",
     ],
 )
