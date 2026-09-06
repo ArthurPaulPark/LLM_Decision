@@ -35,8 +35,5 @@ setup(
         "bitsandbytes>=0.41.0",
         "pydantic>=2.4.0",
         "pyyaml>=6.0.0",
-        "fastapi>=0.104.0",
-        "uvicorn>=0.24.0",
-        "streamlit>=1.28.0",
     ],
 )

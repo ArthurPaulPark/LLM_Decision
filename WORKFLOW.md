@@ -295,67 +295,7 @@ cat outputs/evaluation/metrics.json | python -m json.tool
 cat outputs/evaluation/predictions.json | head -c 1000
 ```
 
-## 6. Dashboard & Web UI
-
-### Terminal 1: Start Backend API
-
-```bash
-python backend/api.py
-
-# Expected output:
-# INFO:     Uvicorn running on http://0.0.0.0:8000
-# INFO:     Application startup complete
-```
-
-### Terminal 2: Start Streamlit Dashboard
-
-```bash
-streamlit run app/dashboard.py
-
-# Expected output:
-#   You can now view your Streamlit app in your browser.
-#   Local URL: http://localhost:8501
-#   Network URL: http://192.168.1.x:8501
-```
-
-### Dashboard Features
-
-1. **Home Page**
-   - Project overview
-   - Current configuration
-   - Quick links
-
-2. **Dataset Page**
-   - Dataset statistics
-   - Split distribution
-   - Preview samples
-
-3. **Training Page**
-   - Configure hyperparameters
-   - Start/pause/resume/stop training
-   - Select model and optimization method
-
-4. **Monitoring Page**
-   - Real-time loss curves
-   - Learning rate schedule
-   - GPU/CPU usage
-
-5. **Inference Page**
-   - Input prompts
-   - Generate tool calls
-   - View metrics
-
-6. **Evaluation Page**
-   - Accuracy metrics
-   - Error analysis
-   - Tool performance
-
-7. **Models Page**
-   - Manage installed models
-   - List trained adapters
-   - Merge/export adapters
-
-## 7. Advanced: Adding New Dataset
+## 6. Advanced: Adding New Dataset
 
 ### Create New Adapter
 
@@ -426,7 +366,7 @@ python train.py --config configs/lora.yaml
 python evaluate.py --model MODEL_PATH --adapter ADAPTER_PATH
 ```
 
-## 8. Troubleshooting
+## 7. Troubleshooting
 
 ### CUDA Out of Memory
 
@@ -454,7 +394,7 @@ export HF_HOME=/custom/cache/path
 - Use smaller batch size with gradient accumulation
 - Check GPU utilization: `nvidia-smi`
 
-## 9. Production Deployment
+## 8. Production Deployment
 
 ### Export Merged Model
 

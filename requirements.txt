@@ -16,13 +16,6 @@ pandas>=2.1.4
 numpy>=1.26.0
 pyyaml>=6.0.1
 
-# API & Web
-fastapi>=0.115.0
-uvicorn>=0.30.0
-streamlit>=1.38.0
-streamlit-aggrid>=0.3.5
-plotly>=5.24.0
-
 # Monitoring & Logging
 tensorboard>=2.17.0
 wandb>=0.18.0
@@ -33,7 +26,6 @@ click>=8.1.7
 tqdm>=4.66.5
 pydantic>=2.9.0
 pydantic-settings>=2.5.0
-python-multipart>=0.0.12
 requests>=2.32.0
 
 # Development

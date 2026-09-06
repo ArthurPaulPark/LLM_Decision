@@ -12,7 +12,6 @@ Build a universal framework that works with ANY function calling dataset, not ju
 - **⚡ Optimized for T4**: Specifically tuned for 16GB VRAM NVIDIA T4 GPU
 - **🎛️ LoRA & QLoRA**: Memory-efficient fine-tuning with 4-bit quantization support
 - **📊 Comprehensive Evaluation**: Function accuracy, argument accuracy, exact match, JSON validity
-- **🎨 Modern Dashboard**: Streamlit + FastAPI for real-time monitoring and management
 - **📈 Production Ready**: Type hints, logging, configuration management, error handling
 - **🔬 Research Grade**: Clean separation of concerns, extensible architecture
 
@@ -24,11 +23,6 @@ llm-decision-framework/
 │   ├── base_adapter.py               # Abstract adapter interface
 │   ├── xlam_adapter.py               # xLAM dataset adapter
 │   └── __init__.py
-├── app/                              # Streamlit frontend
-│   ├── dashboard.py                  # Main dashboard
-│   └── pages/                        # Additional dashboard pages
-├── backend/                          # FastAPI backend
-│   └── api.py                        # REST API endpoints
 ├── configs/                          # Configuration management
 │   ├── base.yaml                     # Base configuration
 │   ├── lora.yaml                     # LoRA settings (T4 optimized)
@@ -136,64 +130,6 @@ python evaluate.py \
 # - predictions.json (sample predictions)
 # - evaluation/report.html (visual report)
 ```
-
-### 6. Dashboard
-
-```bash
-# Terminal 1: Start FastAPI backend
-python backend/api.py
-
-# Terminal 2: Start Streamlit frontend
-streamlit run app/dashboard.py
-
-# Open browser: http://localhost:8501
-```
-
-## 📊 Dashboard Pages
-
-### 🏠 Home
-- Project overview
-- Current configuration
-- Quick start guide
-
-### 📁 Dataset
-- Dataset statistics and distribution
-- Split information
-- Dataset preview and samples
-- Tool schema visualization
-
-### ⚙️ Training
-- Model selection (Qwen, etc.)
-- Optimization type (LoRA/QLoRA)
-- Hyperparameter configuration
-- Training control (start/pause/resume/stop)
-
-### 📈 Monitoring
-- Real-time training curves
-- Learning rate schedule
-- GPU/CPU resource usage
-- ETA and training speed
-- TensorBoard integration
-
-### 🧪 Inference
-- Prompt input interface
-- Tool call generation
-- Pretty JSON output
-- Latency and token statistics
-
-### 📊 Evaluation
-- Function accuracy
-- Argument accuracy
-- JSON validity rate
-- Exact match percentage
-- Error analysis
-- Confusion matrix for tools
-
-### 📂 Models
-- Installed models
-- Downloaded LoRA adapters
-- Merge adapters
-- Export/backup functionality
 
 ## ⚙️ Configuration
 
@@ -429,16 +365,6 @@ huggingface-cli download Qwen/Qwen2.5-0.5B
 python train.py --model "/path/to/local/model"
 ```
 
-### API Connection Error
-
-```bash
-# Ensure backend is running
-python backend/api.py
-
-# Check if port 8000 is available
-lsof -i :8000
-```
-
 ## ❓ FAQ
 
 ### Q: Can I use this with different models?
@@ -496,8 +422,6 @@ merged_model.save_pretrained("merged_model")
 - [🤗 HuggingFace Documentation](https://huggingface.co/docs)
 - [PEFT Documentation](https://huggingface.co/docs/peft)
 - [TRL Documentation](https://huggingface.co/docs/trl)
-- [Streamlit Documentation](https://docs.streamlit.io)
-- [FastAPI Documentation](https://fastapi.tiangolo.com)
 
 ## 📄 License
 

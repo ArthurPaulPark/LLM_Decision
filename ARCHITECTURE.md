@@ -4,14 +4,8 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      Streamlit Dashboard                     │
-│              (Frontend - app/dashboard.py)                   │
-└──────────────────────┬──────────────────────────────────────┘
-                       │ HTTP Requests
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    FastAPI Backend                           │
-│              (backend/api.py)                                │
+│                    CLI Entry Points                          │
+│         preprocess.py / train.py / inference.py              │
 └──────────────────────┬──────────────────────────────────────┘
                        │
         ┌──────────────┼──────────────┐
@@ -65,8 +59,6 @@ training:
 Preprocessing   →  Training  →  Evaluation
                       ↓
                    Inference
-                      ↓
-                   Dashboard
 ```
 
 ### 4. Type Safety
@@ -145,30 +137,6 @@ config.py   → Pydantic dataclasses
 3. Compare with ground truth
 4. Compute accuracy metrics
 5. Generate report
-
-### Dashboard (`app/dashboard.py`)
-
-**Purpose**: Web UI for monitoring
-
-1. Project overview
-2. Dataset exploration
-3. Training configuration
-4. Live monitoring
-5. Inference testing
-6. Evaluation results
-7. Model management
-
-### API Backend (`backend/api.py`)
-
-**Purpose**: REST endpoints
-
-```
-GET  /api/config          → Load configuration
-POST /api/dataset/download → Download dataset
-GET  /api/dataset/info    → Dataset info
-GET  /api/training/status → Training progress
-GET  /api/evaluation/latest → Evaluation results
-```
 
 ## Data Flow
 
@@ -350,17 +318,6 @@ Add to `evaluate.py`:
 def compute_custom_metric(predictions, ground_truth):
     # Custom metric computation
     pass
-```
-
-### 5. Dashboard Pages
-
-Add to `app/pages/`:
-```python
-# app/pages/custom_page.py
-import streamlit as st
-
-st.title("Custom Page")
-# Your components
 ```
 
 ## Performance Characteristics

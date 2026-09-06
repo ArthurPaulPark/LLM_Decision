@@ -28,12 +28,6 @@ extensible, production-ready system.
    - Error handling and validation
    - SOLID principles
 
-✅ MODERN WEB UI
-   - Streamlit dashboard (7 pages)
-   - FastAPI backend (12+ endpoints)
-   - Real-time monitoring
-   - Model management interface
-
 ✅ COMPREHENSIVE DOCUMENTATION
    - README.md: Quick start & features
    - WORKFLOW.md: Step-by-step guide
@@ -66,8 +60,6 @@ python inference.py --model "Qwen/Qwen2.5-0.5B" --adapter "outputs/checkpoints/a
 # 5. Evaluate
 python evaluate.py --model "Qwen/Qwen2.5-0.5B" --adapter "outputs/checkpoints/adapter_model" --test-data "data/processed/test.json"
 
-# 6. Dashboard (optional)
-python backend/api.py & streamlit run app/dashboard.py
 
 ================================================================================
 📚 DOCUMENTATION ROADMAP
@@ -124,8 +116,6 @@ Code
 Modules
    - adapters/ (2: base + xLAM)
    - configs/ (YAML + Python)
-   - app/ (Streamlit dashboard, 7 pages)
-   - backend/ (FastAPI, 12+ endpoints)
    - 4 core scripts (preprocess, train, inference, evaluate)
 
 Quality
@@ -145,7 +135,6 @@ Quality
 ✓ Extensible architecture (clean extension points)
 ✓ Professional documentation (README + Workflows + Architecture)
 ✓ Complete pipeline (preprocessing to evaluation)
-✓ Modern web dashboard (7 pages, real-time monitoring)
 ✓ Optimized for T4 (LoRA and QLoRA configs)
 ✓ Research-grade code quality (type hints, logging, validation)
 ✓ Ready for production deployment
@@ -157,8 +146,7 @@ Quality
 1. Read START_HERE.md first
 2. Run: bash scripts/setup.sh
 3. Follow WORKFLOW.md step-by-step
-4. Use dashboard for monitoring
-5. Review ARCHITECTURE.md to understand design
+4. Review ARCHITECTURE.md to understand design
 
 For new dataset:
 - Create adapter in adapters/
@@ -175,8 +163,6 @@ LLM_Decision/
 ├── data/                  ← Datasets (raw, processed, cache)
 ├── models/                ← Downloaded model weights
 ├── outputs/               ← Checkpoints, predictions, evaluation
-├── app/                   ← Streamlit dashboard
-├── backend/               ← FastAPI backend
 ├── preprocess.py          ← Data pipeline
 ├── train.py               ← Training script
 ├── inference.py           ← Inference engine
@@ -208,7 +194,6 @@ Change hyperparameters:
 □ Run: python preprocess.py --config configs/base.yaml
 □ Run: python train.py --config configs/lora.yaml
 □ Run: python evaluate.py --model MODEL --adapter ADAPTER
-□ Run: streamlit run app/dashboard.py (optional)
 □ Study ARCHITECTURE.md
 □ Plan for new dataset adaptation
 
@@ -236,7 +221,7 @@ Change hyperparameters:
    → Clean extension points
    → Easy to add new adapters
    → Easy to add new evaluations
-   → Easy to add dashboard pages
+   → Easy to add new metrics
 
 5. PROFESSIONAL
    → Enterprise-grade code quality

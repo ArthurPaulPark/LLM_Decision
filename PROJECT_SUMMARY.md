@@ -100,30 +100,6 @@
   - Directory creation
   - Config serialization
 
-### Web Dashboard (100%)
-
-- [x] **app/dashboard.py** - Streamlit dashboard
-  - 🏠 Home page (overview)
-  - 📁 Dataset explorer
-  - ⚙️ Training configuration
-  - 📈 Live monitoring
-  - 🧪 Inference tester
-  - 📊 Evaluation results
-  - 📂 Model management
-  - Professional styling
-
-### REST API Backend (100%)
-
-- [x] **backend/api.py** - FastAPI service
-  - Configuration management endpoints
-  - Dataset info and preview
-  - Training status monitoring
-  - Evaluation results retrieval
-  - Model/adapter listing
-  - TensorBoard integration
-  - CORS support
-  - Comprehensive error handling
-
 ### Documentation (100%)
 
 - [x] **README.md** - Complete project documentation
@@ -140,7 +116,6 @@
   - Training instructions
   - Inference examples
   - Evaluation process
-  - Dashboard usage
   - New dataset adaptation
   - Advanced usage
 
@@ -196,8 +171,6 @@
 | train.py | 8 (LoRA, QLoRA, mixed precision, resume) | 300+ |
 | inference.py | 6 (generation, parsing, metrics, interactive) | 280+ |
 | evaluate.py | 7 (metrics, statistics, reporting) | 350+ |
-| dashboard.py | 7 pages (full UI) | 400+ |
-| api.py | 12 endpoints (backend service) | 300+ |
 
 ## 🎯 Key Design Decisions
 
@@ -225,12 +198,6 @@
 - ✅ Checkpoint management and auto-resume
 - ✅ Experiment metadata tracking
 - ✅ Multiple GPU support via Accelerate
-
-### 5. **Web-Based Monitoring**
-- ✅ Streamlit dashboard for easy interaction
-- ✅ FastAPI backend for scalability
-- ✅ Real-time metrics and status
-- ✅ Model management interface
 
 ## 🔄 Workflow Support
 
@@ -267,17 +234,6 @@ python inference.py --model Qwen/Qwen2.5-0.5B --adapter outputs/checkpoints/adap
 python evaluate.py --model Qwen/Qwen2.5-0.5B --adapter outputs/checkpoints/adapter_model --test-data data/processed/test.json
 ```
 Output: Metrics and predictions in `outputs/evaluation/`
-
-### Dashboard
-```bash
-# Terminal 1
-python backend/api.py
-
-# Terminal 2
-streamlit run app/dashboard.py
-
-# Open http://localhost:8501
-```
 
 ## 🎓 New Dataset Adaptation
 
@@ -338,7 +294,6 @@ Everything else remains unchanged ✨
 - ✅ TensorBoard integration
 - ✅ Metrics tracking
 - ✅ Logging to file
-- ✅ Web dashboard
 - ✅ REST API
 
 ### Experiment Management
@@ -347,24 +302,6 @@ Everything else remains unchanged ✨
 - ✅ Metadata recording
 - ✅ Resume capability
 - ✅ Results archiving
-
-## 🎨 User Interface
-
-### Dashboard Pages
-1. **Home** - Project overview
-2. **Dataset** - Browse and analyze data
-3. **Training** - Configure and start training
-4. **Monitoring** - Real-time metrics
-5. **Inference** - Test model
-6. **Evaluation** - View results
-7. **Models** - Manage adapters
-
-### Features
-- Modern, responsive design
-- Real-time updates
-- Interactive charts
-- File browser
-- Configuration interface
 
 ## 📦 Deliverables Summary
 
@@ -375,7 +312,6 @@ Everything else remains unchanged ✨
 | Training | ✅ Complete | Production |
 | Inference | ✅ Complete | Production |
 | Evaluation | ✅ Complete | Production |
-| Dashboard | ✅ Complete | Professional |
 | Documentation | ✅ Complete | Comprehensive |
 | Code Quality | ✅ Complete | High |
 
@@ -400,14 +336,10 @@ bash scripts/setup.sh
 # 2. Preprocess
 python preprocess.py --config configs/base.yaml
 
-# 3. Train (2 terminals)
-python backend/api.py
-streamlit run app/dashboard.py
-
-# 4. Or CLI
+# 3. Train
 python train.py --config configs/lora.yaml
 
-# 5. Evaluate
+# 4. Evaluate
 python evaluate.py --model MODEL --adapter ADAPTER
 
 # 6. Inference
@@ -422,7 +354,6 @@ python inference.py --model MODEL --adapter ADAPTER --tools tools.json
 ✅ **Production Quality** - Enterprise-grade code
 ✅ **Easy Adaptation** - Only adapters change
 ✅ **Comprehensive** - Preprocessing to evaluation
-✅ **Professional UI** - Streamlit + FastAPI
 ✅ **Well Documented** - README + Workflows + Architecture
 ✅ **Future Proof** - Ready for multiple competitions
 

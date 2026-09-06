@@ -65,18 +65,6 @@ python evaluate.py \
     --test-data "data/processed/test.json"
 ```
 
-### 6. View Dashboard (Optional)
-
-```bash
-# Terminal 1: Start backend
-python backend/api.py
-
-# Terminal 2: Start frontend
-streamlit run app/dashboard.py
-
-# Open: http://localhost:8501
-```
-
 ## 📚 Documentation
 
 Read in this order:
@@ -122,13 +110,6 @@ LLM_Decision/
 │   ├── qlora.yaml              # QLoRA with 4-bit quantization
 │   ├── config.py               # Configuration system
 │   └── logging_config.py       # Logging setup
-│
-├── app/                        # Streamlit dashboard (web UI)
-│   ├── dashboard.py            # Main dashboard with 7 pages
-│   └── pages/                  # Additional pages
-│
-├── backend/                    # FastAPI backend (REST API)
-│   └── api.py                  # 12+ API endpoints
 │
 ├── data/                       # Dataset directory
 │   ├── raw/                    # Raw downloads
@@ -179,12 +160,6 @@ LLM_Decision/
 - **Inference**: Grammar-safe JSON, latency tracking
 - **Evaluation**: 7+ accuracy metrics, detailed reporting
 
-### ✅ Modern Web Interface
-- **Streamlit Dashboard**: 7 pages for full workflow
-- **FastAPI Backend**: 12+ REST endpoints
-- **Real-time Monitoring**: Live metrics and charts
-- **Model Management**: Easy adapter management
-
 ### ✅ Optimized for T4
 - **LoRA Configuration**: 4 batch size, 8 rank, 12GB VRAM
 - **QLoRA Configuration**: 2 batch size, 4-bit quant, 8GB VRAM
@@ -223,12 +198,10 @@ python evaluate.py
 ## 📊 Statistics
 
 - **Total Code**: 2,500+ lines
-- **Core Modules**: 6 (preprocess, train, inference, evaluate, api, dashboard)
+- **Core Modules**: 4 (preprocess, train, inference, evaluate)
 - **Adapters**: 2 (base + xLAM)
 - **Configuration Files**: 3 YAML + 1 Python
 - **Documentation**: 4 markdown guides
-- **API Endpoints**: 12+
-- **Dashboard Pages**: 7
 
 ## 🎓 Learning Path
 
@@ -236,7 +209,7 @@ python evaluate.py
 1. Read README.md
 2. Run preprocess.py
 3. Run train.py
-4. Check dashboard
+4. Run evaluate.py
 
 ### Intermediate
 1. Review WORKFLOW.md
@@ -285,21 +258,10 @@ huggingface-cli download Qwen/Qwen2.5-0.5B
 huggingface-cli login
 ```
 
-### Dashboard Won't Load
-```bash
-# Make sure backend is running
-ps aux | grep api.py
-
-# And port 8000 is free
-lsof -i :8000
-```
-
 ## 🔗 Resources
 
 - **HuggingFace**: https://huggingface.co/docs
 - **PyTorch**: https://pytorch.org/docs
-- **Streamlit**: https://docs.streamlit.io
-- **FastAPI**: https://fastapi.tiangolo.com
 - **PEFT**: https://huggingface.co/docs/peft
 - **TRL**: https://huggingface.co/docs/trl
 
@@ -311,7 +273,6 @@ lsof -i :8000
 - [ ] Train model
 - [ ] Run inference
 - [ ] Evaluate results
-- [ ] View dashboard
 - [ ] Understand architecture
 - [ ] Plan for new dataset
 
@@ -331,7 +292,6 @@ lsof -i :8000
 | Training | ✅ Complete | 6-8h | Production |
 | Inference | ✅ Complete | <1s | Production |
 | Evaluation | ✅ Complete | 30m | Production |
-| Dashboard | ✅ Complete | Real-time | Professional |
 | Documentation | ✅ Complete | - | Comprehensive |
 
 ## 🎯 Mission
@@ -347,7 +307,6 @@ This framework is:
 - ✅ Ready for multi-year deployment
 - ✅ Professional documentation
 - ✅ Complete pipeline (preprocessing to evaluation)
-- ✅ Modern web dashboard
 - ✅ Research-grade code quality
 
 ## 📞 Support
